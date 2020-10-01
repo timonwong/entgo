@@ -257,7 +257,7 @@ func (d *MySQL) cType(c *Column) (t string) {
 }
 
 // addColumn returns the DSL query for adding the given column to a table.
-// The syntax/order is: datatype [Charset] [Unique|Increment] [Collation] [Nullable].
+// The syntax/order is: datatype [Charset] [Unique|Increment] [Collation] [Nullable] [COMMENT comment].
 func (d *MySQL) addColumn(c *Column) *sql.ColumnBuilder {
 	b := sql.Column(c.Name).Type(d.cType(c)).Attr(c.Attr)
 	c.unique(b)
@@ -266,6 +266,7 @@ func (d *MySQL) addColumn(c *Column) *sql.ColumnBuilder {
 	}
 	c.nullable(b)
 	c.defaultValue(b)
+	c.comment(b)
 	return b
 }
 

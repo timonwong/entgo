@@ -36,7 +36,8 @@ var (
 				{{- with $c.Attr }} Attr: "{{ . }}",{{ end }}
 				{{- with $c.Enums }} Enums: []string{ {{ range $e := . }}"{{ $e }}",{{ end }} },{{ end }}
 				{{- with $c.Default }} Default: {{ . }},{{ end }}
-				{{- with $c.SchemaType }} SchemaType: map[string]string{ {{ range $k, $v := . }}"{{ $k }}": "{{ $v }}",{{ end }}}{{ end }}},
+				{{- with $c.SchemaType }} SchemaType: map[string]string{ {{ range $k, $v := . }}"{{ $k }}": "{{ $v }}",{{ end }}},{{ end }}
+				{{- with $c.Comment }} Comment: "{{ . }}",{{ end }}},
 			{{- end }}
 		}
 		{{- $table := pascal $t.Name | printf "%sTable" }}

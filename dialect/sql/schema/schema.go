@@ -148,6 +148,7 @@ type Column struct {
 	Nullable   bool              // null or not null attribute.
 	Default    interface{}       // default value.
 	Enums      []string          // enum values.
+	Comment    string            // column comment.
 	typ        string            // row column type (used for Rows.Scan).
 	indexes    Indexes           // linked indexes.
 	foreign    *ForeignKey       // linked foreign-key.
@@ -250,6 +251,13 @@ func (c *Column) defaultValue(b *sql.ColumnBuilder) {
 			attr += fmt.Sprint(v)
 		}
 		b.Attr(attr)
+	}
+}
+
+// comment adds the `COMMENT` attribute to the column.
+func (c *Column) comment(b *sql.ColumnBuilder) {
+	if v := c.Comment; v != "" {
+		b.Attr(fmt.Sprintf("COMMENT '%s'", strings.Replace(v, "'", "''", -1)))
 	}
 }
 
