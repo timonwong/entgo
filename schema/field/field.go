@@ -227,7 +227,8 @@ func (b *stringBuilder) Immutable() *stringBuilder {
 }
 
 // Comment sets the comment of the field.
-func (b *stringBuilder) Comment(string) *stringBuilder {
+func (b *stringBuilder) Comment(c string) *stringBuilder {
+	b.desc.Comment = c
 	return b
 }
 
@@ -313,6 +314,7 @@ func (b *timeBuilder) Immutable() *timeBuilder {
 
 // Comment sets the comment of the field.
 func (b *timeBuilder) Comment(c string) *timeBuilder {
+	b.desc.Comment = c
 	return b
 }
 
@@ -427,6 +429,7 @@ func (b *boolBuilder) Immutable() *boolBuilder {
 
 // Comment sets the comment of the field.
 func (b *boolBuilder) Comment(c string) *boolBuilder {
+	b.desc.Comment = c
 	return b
 }
 
@@ -503,7 +506,8 @@ func (b *bytesBuilder) Immutable() *bytesBuilder {
 }
 
 // Comment sets the comment of the field.
-func (b *bytesBuilder) Comment(string) *bytesBuilder {
+func (b *bytesBuilder) Comment(c string) *bytesBuilder {
+	b.desc.Comment = c
 	return b
 }
 
@@ -597,6 +601,7 @@ func (b *jsonBuilder) Immutable() *jsonBuilder {
 
 // Comment sets the comment of the field.
 func (b *jsonBuilder) Comment(c string) *jsonBuilder {
+	b.desc.Comment = c
 	return b
 }
 
@@ -727,6 +732,7 @@ func (b *enumBuilder) Immutable() *enumBuilder {
 
 // Comment sets the comment of the field.
 func (b *enumBuilder) Comment(c string) *enumBuilder {
+	b.desc.Comment = c
 	return b
 }
 
@@ -823,6 +829,7 @@ func (b *uuidBuilder) Immutable() *uuidBuilder {
 
 // Comment sets the comment of the field.
 func (b *uuidBuilder) Comment(c string) *uuidBuilder {
+	b.desc.Comment = c
 	return b
 }
 
@@ -905,6 +912,7 @@ type Descriptor struct {
 	Sensitive     bool                    // sensitive info string field.
 	SchemaType    map[string]string       // override the schema type.
 	Annotations   []Annotation            // field annotations.
+	Comment       string
 	err           error
 }
 

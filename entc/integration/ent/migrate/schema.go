@@ -18,7 +18,7 @@ var (
 		{Name: "create_time", Type: field.TypeTime},
 		{Name: "update_time", Type: field.TypeTime},
 		{Name: "number", Type: field.TypeString},
-		{Name: "name", Type: field.TypeString, Nullable: true},
+		{Name: "name", Type: field.TypeString, Nullable: true, Comment: "Exact name written on card"},
 		{Name: "user_card", Type: field.TypeInt, Unique: true, Nullable: true},
 	}
 	// CardsTable holds the schema information for the "cards" table.
@@ -215,7 +215,7 @@ var (
 		{Name: "expire", Type: field.TypeTime},
 		{Name: "type", Type: field.TypeString, Nullable: true, Size: 255},
 		{Name: "max_users", Type: field.TypeInt, Nullable: true, Default: 10},
-		{Name: "name", Type: field.TypeString},
+		{Name: "name", Type: field.TypeString, Comment: "field with multiple validators"},
 		{Name: "group_info", Type: field.TypeInt, Nullable: true},
 	}
 	// GroupsTable holds the schema information for the "groups" table.

@@ -51,7 +51,7 @@ func TestMySQL_Create(t *testing.T) {
 					},
 					Columns: []*Column{
 						{Name: "id", Type: field.TypeInt, Increment: true},
-						{Name: "name", Type: field.TypeString, Nullable: true},
+						{Name: "name", Type: field.TypeString, Nullable: true, Comment: "Name"},
 						{Name: "age", Type: field.TypeInt},
 						{Name: "doc", Type: field.TypeJSON, Nullable: true},
 						{Name: "enums", Type: field.TypeEnum, Enums: []string{"a", "b"}},
@@ -64,7 +64,7 @@ func TestMySQL_Create(t *testing.T) {
 			before: func(mock mysqlMock) {
 				mock.start("5.7.8")
 				mock.tableExists("users", false)
-				mock.ExpectExec(escape("CREATE TABLE IF NOT EXISTS `users`(`id` bigint AUTO_INCREMENT NOT NULL, `name` varchar(255) NULL, `age` bigint NOT NULL, `doc` json NULL, `enums` enum('a', 'b') NOT NULL, `uuid` char(36) binary NULL, `datetime` datetime NULL, `decimal` decimal(6,2) NOT NULL, PRIMARY KEY(`id`)) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin")).
+				mock.ExpectExec(escape("CREATE TABLE IF NOT EXISTS `users`(`id` bigint AUTO_INCREMENT NOT NULL, `name` varchar(255) NULL COMMENT 'Name', `age` bigint NOT NULL, `doc` json NULL, `enums` enum('a', 'b') NOT NULL, `uuid` char(36) binary NULL, `datetime` datetime NULL, `decimal` decimal(6,2) NOT NULL, PRIMARY KEY(`id`)) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin")).
 					WillReturnResult(sqlmock.NewResult(0, 1))
 				mock.ExpectCommit()
 			},
@@ -154,7 +154,7 @@ func TestMySQL_Create(t *testing.T) {
 						{Name: "text", Type: field.TypeString, Nullable: true, Size: math.MaxInt32},
 						{Name: "uuid", Type: field.TypeUUID, Nullable: true},
 						{Name: "date", Type: field.TypeTime, Nullable: true, SchemaType: map[string]string{dialect.MySQL: "date"}},
-						{Name: "age", Type: field.TypeInt},
+						{Name: "age", Type: field.TypeInt, Comment: "Age"},
 						{Name: "tiny", Type: field.TypeInt8},
 						{Name: "tiny_unsigned", Type: field.TypeUint8},
 						{Name: "small", Type: field.TypeInt16},
@@ -193,7 +193,7 @@ func TestMySQL_Create(t *testing.T) {
 					WithArgs("users").
 					WillReturnRows(sqlmock.NewRows([]string{"index_name", "column_name", "non_unique", "seq_in_index"}).
 						AddRow("PRIMARY", "id", "0", "1"))
-				mock.ExpectExec(escape("ALTER TABLE `users` ADD COLUMN `age` bigint NOT NULL")).
+				mock.ExpectExec(escape("ALTER TABLE `users` ADD COLUMN `age` bigint NOT NULL COMMENT 'Age'")).
 					WillReturnResult(sqlmock.NewResult(0, 1))
 				mock.ExpectCommit()
 			},

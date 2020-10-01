@@ -24,8 +24,10 @@ import (
 func TestInt(t *testing.T) {
 	fd := field.Int("age").
 		Positive().
+		Comment("Age").
 		Descriptor()
 	assert.Equal(t, "age", fd.Name)
+	assert.Equal(t, "Age", fd.Comment)
 	assert.Equal(t, field.TypeInt, fd.Info.Type)
 	assert.Len(t, fd.Validators, 1)
 
@@ -89,9 +91,10 @@ func TestInt(t *testing.T) {
 }
 
 func TestFloat(t *testing.T) {
-	f := field.Float("age").Positive()
+	f := field.Float("age").Positive().Comment("Age")
 	fd := f.Descriptor()
 	assert.Equal(t, "age", fd.Name)
+	assert.Equal(t, "Age", fd.Comment)
 	assert.Equal(t, field.TypeFloat64, fd.Info.Type)
 	assert.Len(t, fd.Validators, 1)
 
@@ -126,8 +129,9 @@ func TestFloat(t *testing.T) {
 }
 
 func TestBool(t *testing.T) {
-	fd := field.Bool("active").Default(true).Immutable().Descriptor()
+	fd := field.Bool("active").Default(true).Immutable().Comment("Active").Descriptor()
 	assert.Equal(t, "active", fd.Name)
+	assert.Equal(t, "Active", fd.Comment)
 	assert.Equal(t, field.TypeBool, fd.Info.Type)
 	assert.NotNil(t, fd.Default)
 	assert.True(t, fd.Immutable)
@@ -159,8 +163,9 @@ func TestBool(t *testing.T) {
 }
 
 func TestBytes(t *testing.T) {
-	fd := field.Bytes("active").Default([]byte("{}")).Descriptor()
+	fd := field.Bytes("active").Default([]byte("{}")).Comment("Active").Descriptor()
 	assert.Equal(t, "active", fd.Name)
+	assert.Equal(t, "Active", fd.Comment)
 	assert.Equal(t, field.TypeBytes, fd.Info.Type)
 	assert.NotNil(t, fd.Default)
 	assert.Equal(t, []byte("{}"), fd.Default)
@@ -191,10 +196,12 @@ func TestBytes(t *testing.T) {
 
 func TestString(t *testing.T) {
 	re := regexp.MustCompile("[a-zA-Z0-9]")
-	f := field.String("name").Unique().Match(re).Validate(func(string) error { return nil }).Sensitive()
+	f := field.String("name").Unique().Match(re).Validate(func(string) error { return nil }).Sensitive().
+		Comment("Name")
 	fd := f.Descriptor()
 	assert.Equal(t, field.TypeString, fd.Info.Type)
 	assert.Equal(t, "name", fd.Name)
+	assert.Equal(t, "Name", fd.Comment)
 	assert.True(t, fd.Unique)
 	assert.Len(t, fd.Validators, 2)
 	assert.True(t, fd.Sensitive)
@@ -250,8 +257,10 @@ func TestTime(t *testing.T) {
 		Default(func() time.Time {
 			return now
 		}).
+		Comment("Creation Time").
 		Descriptor()
 	assert.Equal(t, "created_at", fd.Name)
+	assert.Equal(t, "Creation Time", fd.Comment)
 	assert.Equal(t, field.TypeTime, fd.Info.Type)
 	assert.Equal(t, "time.Time", fd.Info.Type.String())
 	assert.NotNil(t, fd.Default)
@@ -293,10 +302,12 @@ func TestTime(t *testing.T) {
 func TestJSON(t *testing.T) {
 	fd := field.JSON("name", map[string]string{}).
 		Optional().
+		Comment("Name").
 		Descriptor()
 	assert.True(t, fd.Optional)
 	assert.Empty(t, fd.Info.PkgPath)
 	assert.Equal(t, "name", fd.Name)
+	assert.Equal(t, "Name", fd.Comment)
 	assert.Equal(t, field.TypeJSON, fd.Info.Type)
 	assert.Equal(t, "map[string]string", fd.Info.String())
 
@@ -351,8 +362,10 @@ func TestField_Enums(t *testing.T) {
 			"master",
 		).
 		Default("user").
+		Comment("Role").
 		Descriptor()
 	assert.Equal(t, "role", fd.Name)
+	assert.Equal(t, "Role", fd.Comment)
 	assert.Equal(t, "user", fd.Enums[0].V)
 	assert.Equal(t, "admin", fd.Enums[1].V)
 	assert.Equal(t, "master", fd.Enums[2].V)
@@ -390,8 +403,10 @@ func TestField_UUID(t *testing.T) {
 	fd := field.UUID("id", uuid.UUID{}).
 		Unique().
 		Default(uuid.New).
+		Comment("Primary Key").
 		Descriptor()
 	assert.Equal(t, "id", fd.Name)
+	assert.Equal(t, "Primary Key", fd.Comment)
 	assert.True(t, fd.Unique)
 	assert.Equal(t, "uuid.UUID", fd.Info.String())
 	assert.Equal(t, "github.com/google/uuid", fd.Info.PkgPath)

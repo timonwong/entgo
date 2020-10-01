@@ -80,6 +80,8 @@ type (
 		// Annotations that were defined for the field in the schema.
 		// The mapping is from the Annotation.Name() to a JSON decoded object.
 		Annotations map[string]interface{}
+		// Comment holds the comment for the field in the schema.
+		Comment string
 	}
 
 	// Edge of a graph between two types.
@@ -192,6 +194,7 @@ func NewType(c *Config, schema *load.Schema) (*Type, error) {
 			Validators:    f.Validators,
 			UserDefined:   true,
 			Annotations:   f.Annotations,
+			Comment:       f.Comment,
 		}
 		if err := typ.checkField(tf, f); err != nil {
 			return nil, err
@@ -837,6 +840,7 @@ func (f Field) Column() *schema.Column {
 		Nullable: f.Optional,
 		Size:     f.size(),
 		Enums:    f.EnumValues(),
+		Comment:  f.Comment,
 	}
 	switch {
 	case f.Default && (f.Type.Numeric() || f.Type.Type == field.TypeBool):
